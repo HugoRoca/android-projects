@@ -1,12 +1,15 @@
 package com.example.usersp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.usersp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var userAdapter: UserAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
@@ -17,10 +20,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userAdapter = UserAdapter(getUsers())
+        val preferences = getPreferences(Context.MODE_PRIVATE)
+        val isFirstTime = preferences.getBoolean(getString(R.string.sp_first_time), true)
+        Log.i("SP", "${getString(R.string.sp_first_time)} = $isFirstTime")
+
+        preferences.edit().putBoolean(getString(R.string.sp_first_time), false).commit()
+
+        userAdapter = UserAdapter(getUsers(), this)
         linearLayoutManager = LinearLayoutManager(this)
 
         binding.recyclerView.apply {
+            setHasFixedSize(true)
             layoutManager = linearLayoutManager
             adapter = userAdapter
         }
@@ -29,10 +39,10 @@ class MainActivity : AppCompatActivity() {
     private fun getUsers(): MutableList<User> {
         val user = mutableListOf<User>()
 
-        val alain = User(1, "Alain", "Nicolas", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/robert-downey-jr-iron-man-casting-1563435293.jpg")
-        val samant = User(2, "Samanta", "Meza", "https://th-thumbnailer.cdn-si-edu.com/gnVVC1OLQs1cWyFWBciZSwXKon8=/1072x720/filters:no_upscale():focal(792x601:793x602)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/52/e4/52e44474-c2dc-41e0-bb77-42a904695196/this-image-shows-a-portrait-of-dragon-man-credit-chuang-zhao_web.jpg")
-        val person1 = User(3, "Jehidi", "Chavez", "https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg")
-        val person2 = User(4, "Hugo", "Roca", "https://media.npr.org/assets/img/2022/11/08/ap22312071681283-0d9c328f69a7c7f15320e8750d6ea447532dff66.jpg")
+        val alain = User(1, "Alain", "Nicolas", "https://via.placeholder.com/150")
+        val samant = User(2, "Samanta", "Meza", "https://via.placeholder.com/150")
+        val person1 = User(3, "Jehidi", "Chavez", "https://via.placeholder.com/150")
+        val person2 = User(4, "Hugo", "Roca", "https://via.placeholder.com/150")
 
         user.add(alain)
         user.add(samant)
@@ -56,5 +66,9 @@ class MainActivity : AppCompatActivity() {
         user.add(person2)
 
         return user
+    }
+
+    override fun onClick(user: User, position: Int) {
+        Toast.makeText(this, "$position: ${user.getFullName()}", Toast.LENGTH_SHORT).show()
     }
 }
