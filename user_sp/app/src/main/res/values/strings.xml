@@ -2,4 +2,10 @@
     <string name="app_name">UserSP</string>
     <string name="description_user_photo">img</string>
     <string name="sp_first_time">First time</string>
+    <string name="dialog_title">Sign Up</string>
+    <string name="dialog_confirm">Register</string>
+    <string name="helper_username">Required</string>
+    <string name="hint_username">User Name</string>
+    <string name="sp_username">username</string>
+    <string name="register_success">Register successfully</string>
 </resources>
