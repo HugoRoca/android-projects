@@ -8,4 +8,5 @@
     <string name="hint_username">User Name</string>
     <string name="sp_username">username</string>
     <string name="register_success">Register successfully</string>
+    <string name="register_invalid">Input a name</string>
 </resources>
